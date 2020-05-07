@@ -29,12 +29,24 @@ module Enumerable
     new_arr
   end
 
-  def my_all?(args = nil, &block)
+  def my_all?(arg = nil, &block)
+    case
+    when block_given? then my_each { |i| return false unless block.call(i) }
 
+    when arg.nil? then my_each { |i| return false unless i }
+
+    when arg.class == Class then my_each { |i| return false unless i.is_a?(arg) }
+
+    when arg.class == Regexp then my_each { |i| return false unless i =~ arg }
+
+    else my_each { |i| return false unless i == arg }
+  end
+    true
   end
 end
 
 arr = [1, 2, 3, 4, 5]
+array = []
 
 p arr.each
 
@@ -47,3 +59,5 @@ p arr.my_select { |item| item.odd? }
 p arr.my_each
 
 p arr.my_each_with_index
+
+p %w[ant bear cat].all? { |word| word.length >= 4 } 
