@@ -72,8 +72,18 @@ module Enumerable
     when arg.nil? then my_each { counter += 1 }
 
     else my_each { |item| counter += 1 if item == arg }
-
     end
     counter
   end
+
+  def my_map(proc = nil)
+    result = []
+    if proc.nil?
+      my_each {|i| result << yield(i)}
+    else
+      my_each {|i| result << proc.call(i)}
+    end
+    result
+  end
 end
+
