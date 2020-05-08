@@ -4,7 +4,7 @@ module Enumerable
     return to_enum(:my_each) unless block_given?
 
     item = 0
-    while item < self.size
+    while item < size
       yield self[item]
       item += 1
     end
@@ -16,9 +16,7 @@ module Enumerable
 
     item = 0
     index = 0
-    while item < self.size
-      yield self[item], index
-    end
+    yield self[item], index while item < size
     self
   end
 
@@ -66,10 +64,9 @@ module Enumerable
 
   def my_count(arg = nil)
     counter = 0
-    case
-    when block_given? then my_each { |item| counter += 1 if yield(item) == true }
+    if block_given? then my_each { |item| counter += 1 if yield(item) == true }
 
-    when arg.nil? then my_each { counter += 1 }
+    elsif arg.nil? then my_each { counter += 1 }
 
     else my_each { |item| counter += 1 if item == arg }
     end
@@ -77,13 +74,28 @@ module Enumerable
   end
 
   def my_map(proc = nil)
+    return to_enum(:my_map!) unless block_given?
+
     result = []
     if proc.nil?
-      my_each {|i| result << yield(i)}
+      my_each { |i| result << yield(i) }
     else
-      my_each {|i| result << proc.call(i)}
+      my_each { |i| result << proc.call(i) }
     end
     result
   end
+
+  def my_inject(current = 0)
+    return enum_for(:my_inject) unless block_given?
+
+    acc = current.nil? ? first : current
+    my_each { |item| acc = yield(acc, item) }
+    acc
+  end
 end
 
+# rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+
+def multiply_els(arr)
+  arr.my_inject(1) { |acc, current_val| acc * current_val }
+end
