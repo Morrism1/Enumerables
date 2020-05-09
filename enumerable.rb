@@ -19,6 +19,14 @@ module Enumerable
     yield self[item], index while item < size
     self
   end
+
+  def my_select
+    return to_enum(:my_select) unless block_given?
+
+    new_arr = []
+    my_each { |item| new_arr << item if yield item }
+    new_arr
+  end
 end
 
 
