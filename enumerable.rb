@@ -84,6 +84,15 @@ module Enumerable
     end
     result
   end
+
+  def my_inject(current = 0)
+    return enum_for(:my_inject) unless block_given?
+
+    acc = current.nil? ? first : current
+    my_each { |item| acc = yield(acc, item) }
+    acc
+  end
+end
 end
 
 
