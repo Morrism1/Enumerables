@@ -42,6 +42,21 @@ module Enumerable
     end
     true
   end
+
+  def my_any?(arg = nil, &block)
+    case
+    when block_given? then my_each { |i| return true if block.call(i) }
+
+    when arg.nil? then my_each { |i| return true if i }
+
+    when arg.class == Class then my_each { |i| return true if i.is_a?(arg) }
+
+    when arg.class == Regexp then my_each { |i| return true if i =~ arg }
+
+    else my_each { |i| return true if i == arg }
+    end
+    false
+  end
 end
 
 
