@@ -61,6 +61,17 @@ module Enumerable
    def my_none?
     !my_any?
   end
+
+   def my_count(arg = nil)
+    counter = 0
+    if block_given? then my_each { |item| counter += 1 if yield(item) == true }
+
+    elsif arg.nil? then my_each { counter += 1 }
+
+    else my_each { |item| counter += 1 if item == arg }
+    end
+    counter
+  end
 end
 
 
