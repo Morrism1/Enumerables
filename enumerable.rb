@@ -27,6 +27,21 @@ module Enumerable
     my_each { |item| new_arr << item if yield item }
     new_arr
   end
+
+  def my_all?(arg = nil, &block)
+    case
+    when block_given? then my_each { |i| return false unless block.call(i) }
+
+    when arg.nil? then my_each { |i| return false unless i }
+
+    when arg.class == Class then my_each { |i| return false unless i.is_a?(arg) }
+
+    when arg.class == Regexp then my_each { |i| return false unless i =~ arg }
+
+    else my_each { |i| return false unless i == arg }
+    end
+    true
+  end
 end
 
 
