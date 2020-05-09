@@ -1,5 +1,4 @@
 module Enumerable
-  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def my_each
     return to_enum(:my_each) unless block_given?
 
@@ -28,7 +27,8 @@ module Enumerable
     new_arr
   end
 
-  def my_all?(arg = nil, &block)
+  # rubocop:todo Metrics/PerceivedComplexity
+  def my_all?(arg = nil, &block) # rubocop:todo Metrics/CyclomaticComplexity
     case
     when block_given? then my_each { |i| return false unless block.call(i) }
 
@@ -42,8 +42,10 @@ module Enumerable
     end
     true
   end
+  # rubocop:enable Metrics/PerceivedComplexity
 
-  def my_any?(arg = nil, &block)
+  # rubocop:todo Metrics/PerceivedComplexity
+  def my_any?(arg = nil, &block) # rubocop:todo Metrics/CyclomaticComplexity
     case
     when block_given? then my_each { |i| return true if block.call(i) }
 
@@ -57,12 +59,13 @@ module Enumerable
     end
     false
   end
+  # rubocop:enable Metrics/PerceivedComplexity
 
-   def my_none?
+  def my_none?
     !my_any?
   end
 
-   def my_count(arg = nil)
+  def my_count(arg = nil)
     counter = 0
     if block_given? then my_each { |item| counter += 1 if yield(item) == true }
 
@@ -73,7 +76,7 @@ module Enumerable
     counter
   end
 
-   def my_map(proc = nil)
+  def my_map(proc = nil)
     return to_enum(:my_map!) unless block_given?
 
     result = []
@@ -93,12 +96,9 @@ module Enumerable
     acc
   end
 end
-end
 
-# rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+# rubocop:enable
 
 def multiply_els(arr)
   arr.my_inject(1) { |acc, current_val| acc * current_val }
 end
-
-
