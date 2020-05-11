@@ -61,8 +61,8 @@ module Enumerable
   end
   # rubocop:enable Metrics/PerceivedComplexity
 
-  def my_none?
-    !my_any?
+  def my_none?(proc = nil,&block)
+    !my_any?(proc,&block)
   end
 
   def my_count(arg = nil)
@@ -102,3 +102,9 @@ end
 def multiply_els(arr)
   arr.my_inject(1) { |acc, current_val| acc * current_val }
 end
+
+# array =  [4, 0, 6, 3, 5, 7, 1, 6, 5, 1, 6, 0, 6, 0, 4, 2, 5, 0, 0, 4, 0, 0, 3, 0, 6, 0, 4, 7, 3, 0, 3, 7, 4, 8, 5, 7, 1, 8, 5, 7, 0, 5, 3, 4, 3, 2, 6, 5, 5, 2, 0, 4, 1, 1, 8, 6, 4, 6, 0, 3, 2, 5, 7, 5, 6, 6, 7, 4, 2, 8, 3, 1, 4, 5, 8, 3, 6, 6, 8, 4, 4, 3, 8, 6, 4, 8, 8, 8, 2, 0, 5, 0, 4, 6, 6, 6, 2, 0, 0, 6]
+
+# p array.inject(:+)
+
+# p array.my_inject(:+)
