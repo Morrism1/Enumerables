@@ -2,9 +2,10 @@ module Enumerable
   def my_each
     return to_enum(:my_each) unless block_given?
 
+    array = to_a
     item = 0
     while item < size
-      yield self[item]
+      yield(array[item])
       item += 1
     end
     self
@@ -61,8 +62,8 @@ module Enumerable
   end
   # rubocop:enable Metrics/PerceivedComplexity
 
-  def my_none?(proc = nil,&block)
-    !my_any?(proc,&block)
+  def my_none?(proc = nil, &block)
+    !my_any?(proc, &block)
   end
 
   def my_count(arg = nil)
@@ -88,11 +89,21 @@ module Enumerable
     result
   end
 
-  def my_inject(current = 0)
-    return enum_for(:my_inject) unless block_given?
+  def my_inject(current = nil, second = nil)
+    arr = to_a
+    acc = arr[0]
 
-    acc = current.nil? ? first : current
-    my_each { |item| acc = yield(acc, item) }
+    acc = yield(current, acc) if block_given? && !current.nil?
+    acc = acc.send(second, current) unless second.nil?
+    (1..arr.size - 1).my_each do |i|
+      acc = if block_given?
+              yield(acc, arr[i])
+            elsif second.nil?
+              acc.send(current, arr[i])
+            else
+              acc.send(second, arr[i])
+            end
+    end
     acc
   end
 end
@@ -102,9 +113,3 @@ end
 def multiply_els(arr)
   arr.my_inject(1) { |acc, current_val| acc * current_val }
 end
-
-# array =  [4, 0, 6, 3, 5, 7, 1, 6, 5, 1, 6, 0, 6, 0, 4, 2, 5, 0, 0, 4, 0, 0, 3, 0, 6, 0, 4, 7, 3, 0, 3, 7, 4, 8, 5, 7, 1, 8, 5, 7, 0, 5, 3, 4, 3, 2, 6, 5, 5, 2, 0, 4, 1, 1, 8, 6, 4, 6, 0, 3, 2, 5, 7, 5, 6, 6, 7, 4, 2, 8, 3, 1, 4, 5, 8, 3, 6, 6, 8, 4, 4, 3, 8, 6, 4, 8, 8, 8, 2, 0, 5, 0, 4, 6, 6, 6, 2, 0, 0, 6]
-
-# p array.inject(:+)
-
-# p array.my_inject(:+)
