@@ -56,6 +56,31 @@ RSpec.describe Enumerable do
 
     end
     
+    describe "#my_all" do
+        it 'should return true if the block passed is not false or nil' do
+            expect(['ant','bear','cat'].my_all? {|word| word.length >= 3 }).to  eql(true)
+        end
+
+        it 'should return false if the block passed is not true' do
+            expect(['ant','bear','cat'].my_all? {|word| word.length >= 4 }).to  eql(false)
+        end
+
+        it 'should return true if the Regexp passed is matching' do
+            expect(['ant','bear','cat'].my_all?(/a/)).to  eql(true)
+        end
+
+        it 'should return false if the Regexp passed is not matching' do
+            expect(['ant','bear','cat'].my_all?(/t/)).to  eql(false)
+        end
+
+        it 'should return true when given an empty array' do
+            expect([].my_all?).to eql(true)
+        end
+
+        it 'should return false if nil is present inside array ' do
+            expect([nil,true,'cat'].my_all?).to  eql(false)
+        end
+    end
     
     
 end
