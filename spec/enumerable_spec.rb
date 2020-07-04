@@ -82,5 +82,61 @@ RSpec.describe Enumerable do
         end
     end
     
+    describe "#my_any?" do
+        it 'should return true if the block passed is not false or nil' do
+            expect(['ant','bear','cat'].my_any? {|word| word.length >= 3 }).to  eql(true)
+        end
+
+        it 'should return true if any element match the block passed is not false or nil' do
+            expect(['ant','bear','cat'].my_any? {|word| word.length >= 4 }).to  eql(true)
+        end
+
+        it 'should return true if any element match the Regexp passed' do
+            expect(['ant','bear','cat'].my_any?(/a/)).to  eql(true)
+        end
+
+        it 'should return true if the Regexp passed is not matching' do
+            expect(['ant','bear','cat'].my_any?(/t/)).to  eql(true)
+        end
+
+        it 'should return false when given an empty array' do
+            expect([].my_any?).to eql(false)
+        end
+
+        it 'should return false if any element is not nil inside array ' do
+            expect([nil,true,'cat'].my_any?).to  eql(true)
+        end
+    end
+    
+    describe "#my_none?" do
+        it 'should return true if the block passed is not true' do
+            expect(['ant','bear','cat'].my_none? {|word| word.length == 5 }).to  eql(true)
+        end
+
+        it 'should return false if any element match the block passed is not false or nil' do
+            expect(['ant','bear','cat'].my_none? {|word| word.length >= 4 }).to  eql(false)
+        end
+
+        it 'should return false if any element match the Regexp passed' do
+            expect(['ant','bear','cat'].my_none?(/a/)).to  eql(false)
+        end
+
+        it 'should return false if the Regexp passed is not matching' do
+            expect(['ant','bear','cat'].my_none?(/t/)).to  eql(false)
+        end
+
+        it 'should return true when given an empty array' do
+            expect([].my_none?).to eql(true)
+        end
+
+        it 'should return false if any element is true inside array ' do
+            expect([nil,true,'cat'].my_none?).to  eql(false)
+        end
+
+        it 'should return true if elements are falsy inside array ' do
+            expect([nil,false].my_none?).to  eql(true)
+        end
+    end
+    
     
 end
