@@ -138,5 +138,18 @@ RSpec.describe Enumerable do
         end
     end
     
+    describe "#my_count" do
+        array = [1, 2, 4, 2]
+        it 'should return of items in the array when used with no arguments' do
+            expect(array.my_count).to eql(4) 
+        end
+        it 'should return the number of items equal to argument given' do
+            expect(array.my_count(2)).to eql(2)  
+        end
+        it 'should return the number of items thats yields true to the block given' do
+            expect(array.my_count {|n| n%2==0}).to  eql(3)
+        end
+    end
+    
     
 end
