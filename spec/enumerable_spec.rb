@@ -166,5 +166,38 @@ RSpec.describe Enumerable do
         end
     end
     
+    describe "#my_inject" do
+        describe "when given a symbol as a parameter that defines an operator" do
+            it 'should return the sum of all array numbers' do
+                expect([1,2,3,4].my_inject(:+)).to  eql(10)
+            end
+
+            it 'should return the sum of all Range numbers' do
+                expect((5..10).my_inject(:+)).to  eql(45)
+            end
+            
+            it 'should return the value from multiplication of numbers with given 2 params one as initial other as a symbol of operator' do
+                expect((5..10).my_inject(1,:*)).to eql(151200) 
+            end
+        end
+
+        describe "when a block is provided and with a parameter" do
+            it 'should take 1st item and be the accumulator or set accum(1) and mulltiply all' do
+                expect((5..10).my_inject(1) {|prod,n| prod * n}).to eql(151200) 
+            end
+
+            it 'should return the sum of array element' do
+                expect([1,2,3,4].my_inject {|acc,n| acc + n}).to eql(10) 
+            end
+        end
+    end
+    
+    describe "#multiply_els" do
+        it 'should take an array as a param and multiply its elements' do
+            array = [2,5,4]
+            expect(multiply_els(array)).to  eql(40)
+        end
+    end
+    
 
 end
