@@ -3,7 +3,7 @@ require './lib/enumerable'
 
 RSpec.describe Enumerable do
   describe '#my_each' do
-    it 'should return each array element as it is' do
+    it 'returns each array element as it is' do
       expect([1, 2, 3, 4].my_each { |num| num }).to eq([1, 2, 3, 4])
     end
 
