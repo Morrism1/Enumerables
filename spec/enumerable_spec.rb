@@ -151,5 +151,20 @@ RSpec.describe Enumerable do
         end
     end
     
+    describe "#my_map" do
+        it 'should return a new array with results from given block' do
+            expect([1,2,3,4,5].my_map {|i| i - 1}).to eql([0,1,2,3,4]) 
+        end
+
+        it 'should return a new array from a Range with results from given block' do
+            expect((1..4).my_map {|i| i * 2}).to eql([2,4,6,8]) 
+        end
+
+        it 'should return a new array with execution from a proc' do
+            new_proc = proc {|n| n * n}
+            expect([1,2,3,4].my_map(&new_proc)).to  eql([1,4,9,16])
+        end
+    end
     
+
 end
